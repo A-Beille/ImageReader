@@ -14,7 +14,7 @@
     <h1 style="text-align: center;">Image Reader PRO</h1>
     <h2 style="text-align: center;">Ce système trop PRO permet de lire le texte dans une image. Essayez maintenant !</h2>
     <form id="form">
-        <img src="" style="margin-right: 9px;" id="preview">
+        <img src="" style="margin-right: 9px; display:none;" id="preview">
     <input type="file" id="img" accept="image/*">
         <label for="img" id="labelforimg">Sélectionner une image<br></label>
         <input type="submit" id="submit" title="Valider l'envoi" value="Envoyer">
@@ -37,6 +37,7 @@ img.addEventListener("change",c=>{
     }
     callback.textContent = ""
     reader.addEventListener("load", () => {
+        preview.style = "margin-right: 9px;"
 preview.src = reader.result
   }, false);
     reader.readAsDataURL(imgput)
@@ -59,6 +60,9 @@ form.addEventListener("submit",f=>{
     if(text == ""){
     callback.style = "color: #ff0000; font-weight:bold"
 callback.textContent = "Aucun texte trouvé dans l'image"
+preview.value = ""
+img.value = ""
+return 0;
     }
     else{
         callback.style = ""
@@ -67,11 +71,12 @@ callback.textContent = text
 }).catch((err)=>{
     callback.style = "color: #ff0000; font-weight:bold"
 callback.textContent = "Une erreur s'est produite"
+preview.value = ""
+img.value = ""
+return 0;
 })
   }, false);
     reader.readAsDataURL(image)
 })
-preview.value = ""
-img.value = ""
     </script>
 </body>

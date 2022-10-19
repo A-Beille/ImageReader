@@ -3,9 +3,10 @@
     <title>Image Reader</title>
     <link rel="icon" href="./assets/favicon.png">
     <link rel="stylesheet" href="./style.css">
-    <meta name="description" content="Image Reader permet de lire du texte venant d'images.">
+    <meta name="description" content="Image Reader allows you to read text from pictures.">
     <meta name="theme-color" content="#5865F2">
     <meta charset="utf-8">
+    <meta name="viewport" content="width-device-width,initial-scale=1.0">
 </head>
 <body>
     <script src='https://unpkg.com/tesseract.js@v3.0.3/dist/tesseract.min.js'></script>
@@ -13,7 +14,7 @@
     <h1 style="text-align: center;">Image Reader PRO</h1>
     <h2 style="text-align: center;">This so PRO system allows you to read all the text in a picture. Try it now !</h2>
     <form id="form">
-        <img src="" style="margin-right: 9px;" id="preview">
+        <img src="" style="margin-right: 9px; display:none;" id="preview">
     <input type="file" id="img" accept="image/*">
         <label for="img" id="labelforimg">Select a picture<br></label>
         <input type="submit" id="submit" title="Send" value="Send">
@@ -36,6 +37,7 @@ img.addEventListener("change",c=>{
     }
     callback.textContent = ""
     reader.addEventListener("load", () => {
+        preview.style = "margin-right: 9px;"
 preview.src = reader.result
   }, false);
     reader.readAsDataURL(imgput)
@@ -48,7 +50,7 @@ form.addEventListener("submit",f=>{
         callback.style = "color: #ff0000; font-weight:bold"
         return;
     }
-    callback.textContent = "Ongoing..."
+    callback.textContent = "Loading..."
         callback.style = "color: #350ee3; font-weight:bold"
     reader.addEventListener("load", () => {
         Tesseract.recognize(
@@ -57,7 +59,10 @@ form.addEventListener("submit",f=>{
 ).then(({ data: { text } }) => {
     if(text == ""){
     callback.style = "color: #ff0000; font-weight:bold"
-callback.textContent = "No text was found in the picture"
+callback.textContent = "No text was found on the picture"
+preview.value = ""
+img.value = ""
+return 0;
     }
     else{
         callback.style = ""
@@ -65,12 +70,13 @@ callback.textContent = text
     }
 }).catch((err)=>{
     callback.style = "color: #ff0000; font-weight:bold"
-callback.textContent = "An error has occured"
+callback.textContent = "An error occured"
+preview.value = ""
+img.value = ""
+return 0;
 })
   }, false);
     reader.readAsDataURL(image)
 })
-preview.value = ""
-img.value = ""
     </script>
 </body>
